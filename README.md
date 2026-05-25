@@ -61,7 +61,7 @@ install-global.sh                # Install/update ~/.claude/
 ### 1. Install global config (once)
 
 ```bash
-git clone https://github.com/stanley-lucas/ai-dev-kit ~/ai-dev-kit
+git clone git@github.com:stanley-lucas/ai-dev-kit.git ~/ai-dev-kit
 cd ~/ai-dev-kit
 ./install-global.sh
 ```
