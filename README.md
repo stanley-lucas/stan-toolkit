@@ -1,5 +1,7 @@
 # stanley-dev-kit
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Personal development kit for Claude Code. Standardized commands, templates, and conventions that travel with me across every project.
 
 ## What it is
