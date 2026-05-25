@@ -1,5 +1,5 @@
 #!/bin/bash
-# install.sh — Bootstrap stanley-dev-kit into an existing or new project
+# install.sh — Bootstrap ai-dev-kit into an existing or new project
 # Usage: ./install.sh [project-path]
 #
 # Copies templates into the target project.

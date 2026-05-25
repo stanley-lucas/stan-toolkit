@@ -1,4 +1,4 @@
-# stanley-dev-kit
+# ai-dev-kit
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -61,8 +61,8 @@ install-global.sh                # Install/update ~/.claude/
 ### 1. Install global config (once)
 
 ```bash
-git clone https://github.com/stanley-lucas/stanley-dev-kit ~/stanley-dev-kit
-cd ~/stanley-dev-kit
+git clone https://github.com/stanley-lucas/ai-dev-kit ~/ai-dev-kit
+cd ~/ai-dev-kit
 ./install-global.sh
 ```
 
