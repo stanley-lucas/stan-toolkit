@@ -45,6 +45,7 @@ copy_if_missing "$KIT_DIR/templates/.claude/commands/sync-docs.md" "$PROJECT/.cl
 copy_if_missing "$KIT_DIR/templates/.claude/commands/release.md"  "$PROJECT/.claude/commands/release.md"
 copy_if_missing "$KIT_DIR/templates/.claude/commands/context.md"  "$PROJECT/.claude/commands/context.md"
 copy_if_missing "$KIT_DIR/templates/.claude/commands/refactor.md" "$PROJECT/.claude/commands/refactor.md"
+copy_if_missing "$KIT_DIR/templates/.claude/commands/devlog.md"   "$PROJECT/.claude/commands/devlog.md"
 
 echo ""
 echo "--- Settings ---"
@@ -61,6 +62,7 @@ copy_if_missing "$KIT_DIR/templates/docs/adr/000-template.md" "$PROJECT/docs/adr
 copy_if_missing "$KIT_DIR/templates/docs/prd/INDEX.md"        "$PROJECT/docs/prd/INDEX.md"
 copy_if_missing "$KIT_DIR/templates/docs/prd/TEMPLATE.md"     "$PROJECT/docs/prd/TEMPLATE.md"
 copy_if_missing "$KIT_DIR/templates/docs/DECISIONS.md"        "$PROJECT/docs/DECISIONS.md"
+copy_if_missing "$KIT_DIR/templates/docs/DEVLOG.md"           "$PROJECT/docs/DEVLOG.md"
 
 echo ""
 echo "--- Gitignore entries ---"

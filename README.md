@@ -43,12 +43,14 @@ templates/                       # Copied into any project via install.sh
       refactor.md                # /refactor — targeted cleanup after a feature
       sync-docs.md               # /sync-docs — update PRD/roadmap source of truth
       release.md                 # /release — version bump, tag, GitHub release
+      devlog.md                  # /devlog  — draft DEVLOG entries from recent git activity
     settings.json                # Project hooks (prettier on write)
   docs/
     adr/000-template.md          # Architecture Decision Record template
     prd/INDEX.md                 # PRD index
     prd/TEMPLATE.md              # PRD template
     DECISIONS.md                 # Quick decision log (read by /context)
+    DEVLOG.md                    # Chronological engineering journal (read by /context and /devlog)
 
 install.sh                       # Bootstrap any project (never overwrites existing files)
 install-global.sh                # Install/update ~/.claude/
@@ -86,6 +88,7 @@ What it installs (only if not already present — safe to re-run):
 | `.claude/settings.json` | Project hooks |
 | `docs/adr/`, `docs/prd/` | Doc structure |
 | `docs/DECISIONS.md` | Quick decision log |
+| `docs/DEVLOG.md` | Chronological engineering journal |
 | `experiments/` | Gitignored spike sandbox |
 
 Then fill in the TODO sections in `CLAUDE.md` and `ARCHITECTURE.md`.
@@ -105,6 +108,7 @@ Then fill in the TODO sections in `CLAUDE.md` and `ARCHITECTURE.md`.
 | `/pr` | Lint, type-check, push, open a GitHub PR |
 | `/sync-docs` | Update roadmap/PRD to reflect what was just shipped |
 | `/release` | Version bump, git tag, GitHub release |
+| `/devlog` | End of session — draft DEVLOG entries from recent git activity, confirm before writing |
 
 ### How `/context` works
 

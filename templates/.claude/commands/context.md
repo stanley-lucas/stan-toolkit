@@ -37,6 +37,8 @@ If any of these exist, read the first 60 lines:
 - `docs/ROADMAP.md`
 - `ARCHITECTURE.md`
 
+If `docs/DEVLOG.md` exists, read the last 5 entries (scan from the top entry comment downward).
+
 ## Step 3 — Generate summary
 
 Produce a single structured block:
