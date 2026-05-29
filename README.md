@@ -43,7 +43,8 @@ templates/                       # Copied into any project via install.sh
       refactor.md                # /refactor — targeted cleanup after a feature
       sync-docs.md               # /sync-docs — update PRD/roadmap source of truth
       release.md                 # /release — version bump, tag, GitHub release
-      devlog.md                  # /devlog  — draft DEVLOG entries from recent git activity
+      devlog.md                  # /devlog     — draft DEVLOG entries from recent git activity
+      bootstrap.md               # /bootstrap  — seed DEVLOG and DECISIONS from git history (existing projects)
     settings.json                # Project hooks (prettier on write)
   docs/
     adr/000-template.md          # Architecture Decision Record template
@@ -109,6 +110,7 @@ Then fill in the TODO sections in `CLAUDE.md` and `ARCHITECTURE.md`.
 | `/sync-docs` | Update roadmap/PRD to reflect what was just shipped |
 | `/release` | Version bump, git tag, GitHub release |
 | `/devlog` | End of session — draft DEVLOG entries from recent git activity, confirm before writing |
+| `/bootstrap` | One-time seed of DEVLOG and DECISIONS from git history (for existing projects) |
 
 ### How `/context` works
 

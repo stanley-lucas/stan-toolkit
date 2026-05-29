@@ -32,6 +32,12 @@ git commit -m "type(scope): description" -m "- What changed and why" -m "Closes 
 
 4. Run `git status` to verify.
 
+5. After a successful commit, check if `docs/DEVLOG.md` exists in the project root.
+   - If it exists: ask "Want to log this session to DEVLOG? (yes / skip)"
+     - **yes**: run `/devlog`
+     - **skip**: do nothing
+   - If it does not exist: skip silently — not every project uses the kit.
+
 ## Rules
 
 - Never stage `.env`, credential files, or secrets

@@ -46,6 +46,7 @@ copy_if_missing "$KIT_DIR/templates/.claude/commands/release.md"  "$PROJECT/.cla
 copy_if_missing "$KIT_DIR/templates/.claude/commands/context.md"  "$PROJECT/.claude/commands/context.md"
 copy_if_missing "$KIT_DIR/templates/.claude/commands/refactor.md" "$PROJECT/.claude/commands/refactor.md"
 copy_if_missing "$KIT_DIR/templates/.claude/commands/devlog.md"   "$PROJECT/.claude/commands/devlog.md"
+copy_if_missing "$KIT_DIR/templates/.claude/commands/bootstrap.md" "$PROJECT/.claude/commands/bootstrap.md"
 
 echo ""
 echo "--- Settings ---"
