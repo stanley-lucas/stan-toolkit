@@ -1,180 +1,159 @@
-# ai-dev-kit
+# Stan Toolkit
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+> Personal development kit for Claude Code, Codex, and OpenCode.
+> Standardized commands, standards, and templates that travel across every project.
 
-Personal development kit for Claude Code. Standardized commands, templates, and conventions that travel with me across every project.
-
-## What it is
-
-A thin layer on top of Claude Code that encodes my working style once, so I never repeat it per project:
-
-- **Global standards** (`~/.claude/`) — code style, commit format, test rules, what I never do. Applied to every Claude session automatically.
-- **Project templates** — a starter `CLAUDE.md`, `ARCHITECTURE.md`, doc structure, and slash commands, copied into any new project in seconds.
-- **Slash commands** — a consistent workflow vocabulary across all projects (`/context`, `/start`, `/commit`, `/refactor`, `/pr`, `/release`).
+---
 
 ## Philosophy
 
-> Human decides **what** and **why**. AI decides **how**.
+The developer is the pilot. The AI is the co-pilot.
 
-- Small releases: every commit is production-ready.
-- Continuous refactoring: small, immediate surgery. Never let debt accumulate.
-- Atomic commits: one concern per commit, never mix unrelated changes.
+The developer sets the direction — what to build, why, when to stop. The AI executes — code, tests, mechanical refactoring. This division keeps you in control of the product while the AI amplifies delivery speed.
+
+Three principles that guide everything:
+
+- **Small releases** — every commit ships production-ready. Nothing broken, nothing half-done.
+- **Continuous refactoring** — surgical, immediate cleanup. Technical debt never accumulates.
+- **Atomic commits** — one concern per commit. Never mix unrelated changes.
+
+---
+
+## Two-layer model
+
+The AI reads two layers of instruction simultaneously: your personal preferences (global, on your machine) and the project standards (in the repository). They are additive, not competing.
+
+```
+Global layer (this toolkit)               Project layer
+──────────────────────────────────        ──────────────────────────────────────
+~/.claude/CLAUDE.md  ← personal style     [project]/CLAUDE.md  ← project standards
+~/.claude/commands/  ← personal commands  [project]/.claude/commands/  ← project commands
+~/.claude/settings.json ← hooks           [project]/.claude/settings.json ← project hooks
+```
+
+Company toolkits (e.g. sarcorps-toolkit) add their standards at the project layer — your global config stays untouched.
 
 ---
 
 ## Structure
 
-```
-global/                          # Installed into ~/.claude/
-  CLAUDE.md                      # Universal standards (style, tests, commits, what I never do)
-  commands/
-    commit.md                    # /commit — lint, stage, conventional commit
-    push.md                      # /push  — push with safety checks
-    pr.md                        # /pr    — lint, type-check, push, open PR
-  settings.json                  # Global hooks (prettier auto-format on write, notifications)
+```text
+standards/               # Tool-agnostic source of truth
+  CODING.md              # Style, tests, commits, what I never do
 
-templates/                       # Copied into any project via install.sh
-  CLAUDE.md                      # Project CLAUDE.md skeleton (fill in TODOs)
-  ARCHITECTURE.md                # Architecture doc skeleton
+agents/                  # Instruction files per AI tool
+  claude/
+    CLAUDE.md            # Personal standards for Claude Code
+    commands/            # Slash commands installed into ~/.claude/commands/
+    settings.json        # Hooks (prettier on write, desktop notifications)
+  codex/
+    AGENTS.md            # Personal standards for Codex
+  opencode/
+    CLAUDE.md            # Personal standards for OpenCode
+
+templates/               # Copied into any project via install.sh
+  CLAUDE.md              # Project CLAUDE.md skeleton
+  AGENTS.md              # Project AGENTS.md skeleton
+  ARCHITECTURE.md        # Architecture doc skeleton
   .claude/
-    commands/
-      start.md                   # /start   — classify work, set up branch
-      context.md                 # /context — snapshot of where the project stands
-      refactor.md                # /refactor — targeted cleanup after a feature
-      sync-docs.md               # /sync-docs — update PRD/roadmap source of truth
-      release.md                 # /release — version bump, tag, GitHub release
-      devlog.md                  # /devlog     — draft DEVLOG entries from recent git activity
-      bootstrap.md               # /bootstrap  — seed DEVLOG and DECISIONS from git history (existing projects)
-    settings.json                # Project hooks (prettier on write)
+    commands/            # Project-level slash commands (8 commands)
+    settings.json        # Project hooks (prettier on write)
   docs/
-    adr/000-template.md          # Architecture Decision Record template
-    prd/INDEX.md                 # PRD index
-    prd/TEMPLATE.md              # PRD template
-    DECISIONS.md                 # Quick decision log (read by /context)
-    DEVLOG.md                    # Chronological engineering journal (read by /context and /devlog)
+    prd/INDEX.md         # PRD index
+    prd/TEMPLATE.md      # PRD template
+    adr/000-template.md  # ADR template
+    DECISIONS.md         # Quick decision log
+    DEVLOG.md            # Engineering journal
 
-install.sh                       # Bootstrap any project (never overwrites existing files)
-install-global.sh                # Install/update ~/.claude/
+lib/
+  ui.sh                  # Shared installer UI (colors, prompts, banners)
+
+install.sh               # Bootstrap a project (interactive, per-category)
+install-global.sh        # Set up your machine (installs commands globally)
 ```
 
 ---
 
 ## Setup
 
-### 1. Install global config (once)
+### Step 1 — Clone the toolkit (once per machine)
 
 ```bash
-git clone git@github.com:stanley-lucas/ai-dev-kit.git ~/ai-dev-kit
-cd ~/ai-dev-kit
+git clone git@github.com:stanley-lucas/stan-toolkit.git ~/stan-toolkit
+```
+
+### Step 2 — Set up your machine (once per machine)
+
+```bash
+cd ~/stan-toolkit
 ./install-global.sh
 ```
 
-This copies `global/CLAUDE.md`, `global/commands/`, and `global/settings.json` into `~/.claude/`. Re-run any time to update.
+The installer will ask which AI tools you use and install accordingly:
 
-> If you already have a `~/.claude/settings.json`, merge the hooks manually — the script won't overwrite it.
+- **Claude Code**: slash commands are always installed/updated globally. CLAUDE.md and settings.json are opt-in.
+- **Codex**: installs AGENTS.md into `~/.codex/`
+- **OpenCode**: installs CLAUDE.md into `~/.opencode/`
 
-### 2. Bootstrap a project
+For each file that already exists, you choose:
+
+- **Skip** — nothing is changed
+- **Reference** — saves a copy with `.stan` suffix alongside your existing file
+- **Diff** — shows differences for manual merging
+- **Replace** — replaces your file (double confirmation required)
+
+### Step 3 — Bootstrap a project (once per repo)
 
 ```bash
-./install.sh ~/path/to/project
+cd ~/path/to/project
+~/stan-toolkit/install.sh .
 ```
 
-What it installs (only if not already present — safe to re-run):
+The installer walks through each category and asks before installing anything.
 
-| File | Purpose |
-|------|---------|
-| `CLAUDE.md` | Project standards skeleton |
-| `ARCHITECTURE.md` | Architecture doc skeleton |
-| `.claude/commands/*.md` | Slash commands |
-| `.claude/settings.json` | Project hooks |
-| `docs/adr/`, `docs/prd/` | Doc structure |
-| `docs/DECISIONS.md` | Quick decision log |
-| `docs/DEVLOG.md` | Chronological engineering journal |
-| `experiments/` | Gitignored spike sandbox |
+---
 
-Then fill in the TODO sections in `CLAUDE.md` and `ARCHITECTURE.md`.
+## Updating
+
+```bash
+cd ~/stan-toolkit
+git pull
+./install-global.sh   # re-run to update slash commands globally
+```
+
+Project templates only apply at bootstrap — existing projects are not updated automatically.
+Re-run `./install.sh` on a project to update individual files.
 
 ---
 
 ## Slash commands
 
+### Global (installed into `~/.claude/commands/`)
+
 | Command | When to use |
-|---------|-------------|
-| `/context` | Re-orient after time away — shows recent commits, open issues, PRs, and the logical next step |
-| `/start new` | Starting new work — classifies the task, proposes a branch name |
-| `/start fix issue-42` | Loading context for a specific issue before diving in |
-| `/commit` | Lint changed files → stage → write a conventional commit message |
+|---|---|
+| `/commit` | Lint → stage → conventional commit |
 | `/push` | Push to remote with safety checks |
-| `/refactor` | After a feature lands — scan for drift (size, duplication, naming, depth) and apply surgical fixes |
-| `/pr` | Lint, type-check, push, open a GitHub PR |
-| `/sync-docs` | Update roadmap/PRD to reflect what was just shipped |
-| `/release` | Version bump, git tag, GitHub release |
-| `/devlog` | End of session — draft DEVLOG entries from recent git activity, confirm before writing |
-| `/bootstrap` | One-time seed of DEVLOG and DECISIONS from git history (for existing projects) |
+| `/pr` | Lint, type-check, push, open GitHub PR |
 
-### How `/context` works
+### Project-level (installed into `[project]/.claude/commands/`)
 
-Reads `git log`, open issues, open PRs, and any `docs/prd/INDEX.md` or `ARCHITECTURE.md`, then outputs a single structured block:
-
-```
-Context snapshot — my-project
-──────────────────────────────────
-Recent: last 2-3 commits in plain English
-Open:   N issues open — top priorities
-PRs:    N open PRs — any blocked or draft
-Next:   most logical next action
-```
-
-### How `/refactor` works
-
-Scoped to the current branch's changed files only. Scans for:
-- Files over 300 lines (split candidates)
-- Patterns repeated 3+ times (extraction candidates)
-- Generic names (`data`, `result`, `handler`)
-- Nesting beyond 2 levels
-- Dead code
-
-Proposes a list of candidates, asks for confirmation, then commits each change atomically — never mixes refactoring with behavior changes.
+| Command | When to use |
+|---|---|
+| `/context` | Re-orient after time away — recent commits, open issues, next step |
+| `/start new` | Start new work — classify, propose branch |
+| `/start feat\|fix issue-NNN` | Load issue context before diving in |
+| `/refactor` | After a feature — scan for drift and apply surgical fixes |
+| `/sync-docs` | Update PRD/roadmap to reflect what was shipped |
+| `/release` | Version bump, tag, GitHub release |
+| `/devlog` | Draft DEVLOG entries from recent git activity |
+| `/bootstrap` | One-time seed of DEVLOG and DECISIONS from git history |
 
 ---
 
-## Global standards (highlights)
+## Evolving the toolkit
 
-The full rules live in `global/CLAUDE.md`. Key excerpts:
-
-**Code style**
-- Functions: 4–20 lines. Files: under 500 lines.
-- No `any` in TypeScript, no untyped functions in Python.
-- Early returns over nested ifs. Max 2 levels of indentation.
-- Names must be specific — avoid `data`, `handler`, `Manager`.
-
-**Tests**
-- Every new function gets a test. Bug fixes get a regression test.
-- Mock external I/O with named fake classes, not inline stubs.
-- Tests must be F.I.R.S.T.
-
-**Commits**
-```
-type(scope): short description (#issue)
-
-- What changed and why
-
-Closes #XX
-```
-Types: `fix`, `feat`, `docs`, `refactor`, `style`, `test`, `chore`
-
-**What I never do**
-- Commit to main directly
-- Skip type checks or linters before a PR
-- Use `--no-verify` or `--force`
-- Add abstractions beyond what the task requires
-- Design for hypothetical future requirements
-
----
-
-## Evolving the kit
-
-1. Edit files in `global/` or `templates/`
-2. Re-run `./install-global.sh` to push global changes to `~/.claude/`
-3. Template changes only apply to new project installs — existing projects aren't updated automatically
-4. Commit and push to track your evolution
+1. Edit `standards/CODING.md` for rule changes
+2. Update `agents/claude/CLAUDE.md`, `agents/codex/AGENTS.md`, `agents/opencode/CLAUDE.md`
+3. Update `templates/` if project scaffolding needs to change
+4. Commit, push — re-run `./install-global.sh` to apply global changes
