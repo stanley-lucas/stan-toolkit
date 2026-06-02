@@ -45,7 +45,6 @@ print_banner() {
 # ── Section header ───────────────────────────────────────────────────────────
 print_section() {
   echo ""
-  printf "${BOLD}${CYAN}── %s ${DIM}%s${RESET}\n" "$1" "$(printf '─%.0s' {1..40})" | head -c 60
   printf "${BOLD}${CYAN}── %s ${RESET}\n" "$1"
 }
 
@@ -146,6 +145,25 @@ show_diff() {
     info "Incoming : $incoming"
   fi
   echo ""
+}
+
+# ── Prompt: show diff then ask what to do ────────────────────────────────────
+# Usage: show_diff_then_decide <existing> <incoming>
+# Returns: DIFF_CHOICE — "keep" | "replace"
+show_diff_then_decide() {
+  local existing="$1"
+  local incoming="$2"
+
+  show_diff "$existing" "$incoming"
+
+  ask_choice "What would you like to do?" \
+    "Keep — leave my file unchanged" \
+    "Replace — overwrite with toolkit version"
+
+  case "$CHOICE" in
+    2) DIFF_CHOICE="replace" ;;
+    *) DIFF_CHOICE="keep" ;;
+  esac
 }
 
 # ── Summary block ─────────────────────────────────────────────────────────────

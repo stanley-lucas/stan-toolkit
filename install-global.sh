@@ -101,9 +101,16 @@ if [ "$USE_CLAUDE" = true ] && [ -f "$KIT_DIR/agents/claude/CLAUDE.md" ]; then
         CREATED=$((CREATED + 1))
         ;;
       3)
-        show_diff "$PERSONAL_CLAUDE" "$KIT_CLAUDE"
-        warn "No changes written. Edit ~/.claude/CLAUDE.md manually to merge."
-        SKIPPED=$((SKIPPED + 1))
+        show_diff_then_decide "$PERSONAL_CLAUDE" "$KIT_CLAUDE"
+        if [ "$DIFF_CHOICE" = "replace" ]; then
+          cp "$PERSONAL_CLAUDE" "$PERSONAL_CLAUDE.backup"
+          cp "$KIT_CLAUDE" "$PERSONAL_CLAUDE"
+          ok "~/.claude/CLAUDE.md replaced (backup at CLAUDE.md.backup)"
+          CREATED=$((CREATED + 1))
+        else
+          skip "~/.claude/CLAUDE.md (kept existing)"
+          SKIPPED=$((SKIPPED + 1))
+        fi
         ;;
       4)
         echo ""
@@ -158,9 +165,16 @@ if [ "$USE_CLAUDE" = true ] && [ -f "$KIT_DIR/agents/claude/settings.json" ]; th
         CREATED=$((CREATED + 1))
         ;;
       3)
-        show_diff "$PERSONAL_SETTINGS" "$KIT_SETTINGS"
-        warn "No changes written. Edit ~/.claude/settings.json manually to merge."
-        SKIPPED=$((SKIPPED + 1))
+        show_diff_then_decide "$PERSONAL_SETTINGS" "$KIT_SETTINGS"
+        if [ "$DIFF_CHOICE" = "replace" ]; then
+          cp "$PERSONAL_SETTINGS" "$PERSONAL_SETTINGS.backup"
+          cp "$KIT_SETTINGS" "$PERSONAL_SETTINGS"
+          ok "~/.claude/settings.json replaced (backup at settings.json.backup)"
+          CREATED=$((CREATED + 1))
+        else
+          skip "~/.claude/settings.json (kept existing)"
+          SKIPPED=$((SKIPPED + 1))
+        fi
         ;;
       4)
         echo ""
@@ -213,9 +227,16 @@ if [ "$USE_CODEX" = true ] && [ -f "$KIT_DIR/agents/codex/AGENTS.md" ]; then
         CREATED=$((CREATED + 1))
         ;;
       3)
-        show_diff "$PERSONAL_AGENTS" "$KIT_AGENTS"
-        warn "No changes written."
-        SKIPPED=$((SKIPPED + 1))
+        show_diff_then_decide "$PERSONAL_AGENTS" "$KIT_AGENTS"
+        if [ "$DIFF_CHOICE" = "replace" ]; then
+          cp "$PERSONAL_AGENTS" "$PERSONAL_AGENTS.backup"
+          cp "$KIT_AGENTS" "$PERSONAL_AGENTS"
+          ok "~/.codex/AGENTS.md replaced (backup at AGENTS.md.backup)"
+          CREATED=$((CREATED + 1))
+        else
+          skip "~/.codex/AGENTS.md (kept existing)"
+          SKIPPED=$((SKIPPED + 1))
+        fi
         ;;
       4)
         warn "This will REPLACE your personal ~/.codex/AGENTS.md."
@@ -267,9 +288,16 @@ if [ "$USE_OPENCODE" = true ] && [ -f "$KIT_DIR/agents/opencode/CLAUDE.md" ]; th
         CREATED=$((CREATED + 1))
         ;;
       3)
-        show_diff "$PERSONAL_OC" "$KIT_OC"
-        warn "No changes written."
-        SKIPPED=$((SKIPPED + 1))
+        show_diff_then_decide "$PERSONAL_OC" "$KIT_OC"
+        if [ "$DIFF_CHOICE" = "replace" ]; then
+          cp "$PERSONAL_OC" "$PERSONAL_OC.backup"
+          cp "$KIT_OC" "$PERSONAL_OC"
+          ok "~/.opencode/CLAUDE.md replaced (backup at CLAUDE.md.backup)"
+          CREATED=$((CREATED + 1))
+        else
+          skip "~/.opencode/CLAUDE.md (kept existing)"
+          SKIPPED=$((SKIPPED + 1))
+        fi
         ;;
       4)
         warn "This will REPLACE your personal ~/.opencode/CLAUDE.md."

@@ -45,14 +45,33 @@ install_file() {
     add "$label"
     CREATED=$((CREATED + 1))
   else
-    if ask_yn "  $(basename "$dst") already exists. Replace it?" "n"; then
-      cp "$src" "$dst"
-      ok "$label (replaced)"
-      CREATED=$((CREATED + 1))
-    else
-      skip "$label (kept existing)"
-      SKIPPED=$((SKIPPED + 1))
-    fi
+    ask_choice "  $(basename "$dst") already exists. What would you like to do?" \
+      "Skip — keep existing" \
+      "Diff — show differences" \
+      "Replace — overwrite with toolkit version"
+
+    case "$CHOICE" in
+      1)
+        skip "$label (kept existing)"
+        SKIPPED=$((SKIPPED + 1))
+        ;;
+      2)
+        show_diff_then_decide "$dst" "$src"
+        if [ "$DIFF_CHOICE" = "replace" ]; then
+          cp "$src" "$dst"
+          ok "$label (replaced)"
+          CREATED=$((CREATED + 1))
+        else
+          skip "$label (kept existing)"
+          SKIPPED=$((SKIPPED + 1))
+        fi
+        ;;
+      3)
+        cp "$src" "$dst"
+        ok "$label (replaced)"
+        CREATED=$((CREATED + 1))
+        ;;
+    esac
   fi
 }
 
@@ -131,9 +150,16 @@ if [ -f "$COMPANY_SETTINGS" ]; then
         SKIPPED=$((SKIPPED + 1))
         ;;
       2)
-        show_diff "$PROJECT_SETTINGS" "$COMPANY_SETTINGS"
-        warn "No changes written. Edit .claude/settings.json manually to merge."
-        SKIPPED=$((SKIPPED + 1))
+        show_diff_then_decide "$PROJECT_SETTINGS" "$COMPANY_SETTINGS"
+        if [ "$DIFF_CHOICE" = "replace" ]; then
+          cp "$PROJECT_SETTINGS" "$PROJECT_SETTINGS.backup"
+          cp "$COMPANY_SETTINGS" "$PROJECT_SETTINGS"
+          ok ".claude/settings.json replaced (backup at settings.json.backup)"
+          CREATED=$((CREATED + 1))
+        else
+          skip ".claude/settings.json (kept existing)"
+          SKIPPED=$((SKIPPED + 1))
+        fi
         ;;
       3)
         warn "This will replace .claude/settings.json."
